@@ -1,27 +1,28 @@
 
-/**
-* Χρησιμοποιήστε αυτό το αρχείο για να ορίσετε προσαρμοσμένες συναρτήσεις και μπλοκ.
-* Διαβάστε περισσότερα στο https://makecode.microbit.org/blocks/custom
-* 
-* v0.7
-*/
-
 enum NeoPixelColors {
-    //% block=άσπρο
+    //% block="white"
+    //% block.loc.el="άσπρο"
     White = 0xAAAAAA,
-    //% block=κόκκινο
+    //% block="red"
+    //% block.loc.el="κόκκινο"
     Red = 0xFF0000,
-    //% block=πράσινο
+    //% block="green"
+    //% block.loc.el="πράσινο"
     Green = 0x00FF00,
-    //% block=μπλε
+    //% block="blue"
+    //% block.loc.el="μπλε"
     Blue = 0x0000FF,
-    //% block=πορτοκαλί    
+    //% block="orange"
+    //% block.loc.el="πορτοκαλί"
     Orange = 0xFF3300,
-    //% block=κίτρινο
+    //% block="yello"
+    //% block.loc.el="κίτρινο"
     Yellow = 0xAA6600,
-    //% block=μωβ
+    //% block="purple"
+    //% block.loc.el="μωβ"
     Purple = 0x8a2be2,
-    //% block=μαύρο
+    //% block="black"
+    //% block.loc.el="μαύρο"
     Black = 0x000000
 }
 
@@ -696,7 +697,9 @@ namespace rb0ledstrip {
      * @param pin το pin που βρίσκεται στη ταινία led
      * @param numleds αριθμός led στην ταινία, π.χ.: 24,30,60,64
      */
-    //% blockId="rb0strip_simplecreate" block="ταινία led στη θύρα %port|και έχει %numleds|led"
+    //% blockId="rb0strip_simplecreate"
+    //% block="led strip at port %port|and contains %numleds|led"
+    //% block.loc.el="ταινία led στη θύρα %port|και έχει %numleds|led"
     //% weight=90 blockGap=8
     export function rb0strip_createsimple(port: KeyestudioPort, numleds: number) {
         enablePort(port);
@@ -717,7 +720,9 @@ namespace rb0ledstrip {
      * @param pin το pin που βρίσκεται στη ταινία led
      * @param numleds αριθμός led στην ταινία, π.χ.: 24,30,60,64
      */
-    //% blockId="rb0strip_advancedcreate" block="ταινία led στο %pin|με %numleds|led σε λειτουργία %mode"
+    //% blockId="rb0strip_advancedcreate"
+    //% block="led strip at %pin|and contains %numleds|led in operation %mode"
+    //% block.loc.el="ταινία led στο %pin|με %numleds|led σε λειτουργία %mode"
     //% weight=90 blockGap=8 advanced=true
     export function rb0strip_createadvanced(pin: DigitalPin, numleds: number, mode: NeoPixelMode): void {
         rb0ledstip1 = new Strip();
@@ -739,7 +744,9 @@ namespace rb0ledstrip {
      * @param pixeloffset position of the NeoPixel in the strip
      * @param rgb RGB color of the LED
      */
-    //% blockId="rb0strip_set_pixel_color" block="ταινία led άλλαξε το led %pixeloffset|σε %rgb=neopixel_colors"
+    //% blockId="rb0strip_set_pixel_color"
+    //% block="led strip set led %pixeloffset| %rgb=neopixel_colors"
+    //% block.loc.el="ταινία led άλλαξε το led %pixeloffset|σε %rgb=neopixel_colors"
     //% weight=80 blockGap=8
     export function setPixelColor(pixeloffset: number, rgb: number): void {
         pixeloffset = pixeloffset - 1;
@@ -749,7 +756,9 @@ namespace rb0ledstrip {
     /**
     * Turn on all LEDs.
     */
-    //% blockId="rb0strip_light_all_leds" block="ταινία led άναψε όλα τα led"
+    //% blockId="rb0strip_light_all_leds"
+    //% block="led strip show all leds"
+    //% block.loc.el="ταινία led άναψε όλα τα led"
     //% weight=88 advanced=true
     export function lightAllLeds(): void {
         rb0ledstip1.showColor(rb0ledstip1.stripColor);
@@ -758,7 +767,9 @@ namespace rb0ledstrip {
     /**
     * Turn off all LEDs.
     */
-    //% blockId="rb0strip_hide" block="ταινία led σβήσε όλα τα led"
+    //% blockId="rb0strip_hide"
+    //% block="led strip hide all leds"
+    //% block.loc.el="ταινία led σβήσε όλα τα led"
     //% weight=77
     export function hide(): void {
         rb0ledstip1.hideAllLeds();
@@ -768,7 +779,9 @@ namespace rb0ledstrip {
      * Turn off all LEDs.
      * You need to call ``show`` to make the changes visible.
      */
-    //% blockId="rb0strip_clear" block="ταινία led μηδένισε όλα τα led"
+    //% blockId="rb0strip_clear"
+    //% block="led strip clear leds"
+    //% block.loc.el="ταινία led μηδένισε όλα τα led"
     //% weight=87 advanced=true
     export function clear(): void {
         rb0ledstip1.clear();
@@ -778,7 +791,9 @@ namespace rb0ledstrip {
      * Shows all LEDs to a given color (range 0-255 for r, g, b).
      * @param rgb χρώμα RGB για τα LED
      */
-    //% blockId="rb0strip_set_strip_color" block="ταινία led εμφάνισε %rgb=neopixel_colors χρώμα"
+    //% blockId="rb0strip_set_strip_color"
+    //% block.loc.el="led strip show color %rgb=neopixel_colors"
+    //% block.loc.el="ταινία led εμφάνισε %rgb=neopixel_colors χρώμα"
     //% weight=85 blockGap=8
     export function showColor(rgb: number): void {
         rb0ledstip1.showColor(rgb);
@@ -789,8 +804,10 @@ namespace rb0ledstrip {
      * You need to call ``show`` to make the changes visible.
      * @param offset number of pixels to rotate forward, eg: 1
      */
-    //% blockId="rb0strip_rotate" block="ταινία led περιέστρεψε τα χρώματα κατά %offset|led" blockGap=8
-    //% weight=39 advanced=true
+    //% blockId="rb0strip_rotate"
+    //% block="led strip rotate pixels with step %offset|led"
+    //% block.loc.el="ταινία led περιέστρεψε τα χρώματα κατά %offset|led"
+    //% weight=39 advanced=true  blockGap=8
     export function rotate(offset: number = 1): void {
         rb0ledstip1.rotate(offset);
     }
@@ -799,7 +816,9 @@ namespace rb0ledstrip {
      * Return "true" if the led strip is lighted
      * 
      */
-    //% blockId="rb0strip_islighted" block="ταινία led είναι αναμμένη"
+    //% blockId="rb0strip_islighted"
+    //% block="led strip is lighted"
+    //% block.loc.el="ταινία led είναι αναμμένη"
     //% weight=38
     export function isStripLighted(): boolean {
         return rb0ledstip1.isStripLighted();
@@ -809,7 +828,9 @@ namespace rb0ledstrip {
     * Return "true" if the led strip is lighted
     * 
     */
-    //% blockId="rb0strip_isnotlighted" block="ταινία led δεν είναι αναμμένη"
+    //% blockId="rb0strip_isnotlighted"
+    //% block="led strip is not lighted"
+    //% block.loc.el="ταινία led δεν είναι αναμμένη"
     //% weight=37
     export function isStripNotLighted(): boolean {
         return rb0ledstip1.isStripNotLighted();
@@ -821,7 +842,9 @@ namespace rb0ledstrip {
      * @param pixeloffset position of the NeoPixel in the strip
      * @param rgb RGB color of the LED
      */
-    //% blockId="rb0strip_iscolored" block="ταινία led δείχνει %color|χρώμα"
+    //% blockId="rb0strip_iscolored"
+    //% block="led strip is showing %color"
+    //% block.loc.el="ταινία led δείχνει %color|χρώμα"
     //% weight=35
     export function isStripColored(color: NeoPixelColors): boolean {
         return rb0ledstip1.isStripColor(color);
@@ -831,8 +854,10 @@ namespace rb0ledstrip {
      * Set the brightness of the strip. This flag only applies to future operation.
      * @param brightness a measure of LED brightness in 0-255. eg: 255
      */
-    //% blockId="rb0strip_set_brightness" block="ταινία led όρισε τη φωτεινότητα σε %brightness" blockGap=8
-    //% weight=59 advanced=true
+    //% blockId="rb0strip_set_brightness"
+    //% block.loc.el="led strip set brightness at %brightness"
+    //% block.loc.el="ταινία led όρισε τη φωτεινότητα σε %brightness"
+    //% weight=59 advanced=true blockGap=8
     export function setBrightness(brightness: number): void {
         rb0ledstip1.setBrightness(brightness);
     }
@@ -842,7 +867,6 @@ namespace rb0ledstrip {
     */
     //% weight=2 blockGap=8
     //% blockId="rb0strip_getColor"
-    //% parts="neopixel"
     export function getColor(color: NeoPixelColors): number {
         return color;
     }
