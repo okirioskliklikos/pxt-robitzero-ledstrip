@@ -611,7 +611,9 @@ namespace rb0ledstrip {
      * @param blue value of the blue channel between 0 and 255. eg: 255
      */
     //% weight=1
-    //% blockId="neopixel_rgb" block="κόκκινο %red|πράσινο %green|μπλε %blue"
+    //% blockId="neopixel_rgb"
+    //% block="red %red|green %green|blue %blue"
+    //% block.loc.el="κόκκινο %red|πράσινο %green|μπλε %blue"
     //% advanced=true
     export function rgb(red: number, green: number, blue: number): number {
         return packRGB(red, green, blue);
