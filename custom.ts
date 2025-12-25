@@ -60,7 +60,8 @@ enum KeyestudioPort {
 /**
  * Functions to operate NeoPixel strips.
  */
-//% block="Ταινία Led"
+//% block="Led Strip"
+//% block.loc.el="Ταινία Led"
 //% weight=7 color=#e86800 icon="\uf0eb"
 namespace rb0ledstrip {
     /**
