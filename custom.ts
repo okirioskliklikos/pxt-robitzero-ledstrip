@@ -30,24 +30,6 @@ enum NeoPixelMode {
     RGB_RGB = 3
 }
 
-enum KeyestudioPort {
-    //% block="P0"
-    P0,
-    //% block="P1/P2"
-    P1P2,
-    //% block="P8/P3/P4"
-    P8P3P4,
-    //% block="P10"
-    P10,
-    //% block="P6/P7"
-    P6P7,
-    //% block="P5"
-    P5,
-    //% block="P11"
-    P11,
-    //% block="P12"
-    P12
-}
 
 /**
  * Functions to operate NeoPixel strips.
@@ -699,7 +681,8 @@ namespace rb0ledstrip {
     //% block="led strip at port %port|and contains %numleds|led"
     //% weight=90 blockGap=8
     export function rb0strip_createsimple(port: KeyestudioPort, numleds: number) {
-        enablePort(port);
+        let pin = rb0base.getPinFromKeyestudioPort(port);
+        rb0base.enablePin(pin);
         rb0ledstip1 = new Strip();
         let stride = 3;
         rb0ledstip1.buf = pins.createBuffer(numleds * stride);
@@ -707,7 +690,7 @@ namespace rb0ledstrip {
         rb0ledstip1._length = numleds;
         rb0ledstip1._mode = NeoPixelMode.RGB;
         rb0ledstip1._matrixWidth = 0;
-        rb0ledstip1.setPin(getPin(port));
+        rb0ledstip1.setPin(pin);
         rb0ledstip1.stripColor = NeoPixelColors.Orange;
         rb0ledstip1.setBrightness(10);
     }
@@ -855,45 +838,5 @@ namespace rb0ledstrip {
     //% blockId="rb0strip_getColor"
     export function getColor(color: NeoPixelColors): number {
         return color;
-    }
-
-    //% blockId="rb0strip_getPin"
-    function getPin(port: KeyestudioPort): DigitalPin {
-        switch (port) {
-            case KeyestudioPort.P0:
-                return DigitalPin.P0;
-                break;
-            case KeyestudioPort.P1P2:
-                return DigitalPin.P1;
-                break;
-            case KeyestudioPort.P8P3P4:
-                return DigitalPin.P8;
-                break;
-            case KeyestudioPort.P10:
-                return DigitalPin.P10;
-                break;
-            case KeyestudioPort.P6P7:
-                return DigitalPin.P7;
-                break;
-            case KeyestudioPort.P5:
-                return DigitalPin.P5;
-                break;
-            case KeyestudioPort.P11:
-                return DigitalPin.P11;
-                break;
-            case KeyestudioPort.P12:
-                return DigitalPin.P12;
-                break;
-            default:
-                return DigitalPin.P0;
-                break;
-        }
-    }
-
-    function enablePort(port: KeyestudioPort): void {
-        if (port === KeyestudioPort.P10
-            || port === KeyestudioPort.P6P7) {
-            led.enable(false)
-        }
     }
 }
