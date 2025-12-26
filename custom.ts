@@ -795,7 +795,7 @@ namespace rb0ledstrip {
      * @param rgb χρώμα RGB για τα LED
      */
     //% blockId="rb0strip_set_strip_color"
-    //% block.loc.el="led strip show color %rgb=neopixel_colors"
+    //% block="led strip show color %rgb=neopixel_colors"
     //% block.loc.el="ταινία led εμφάνισε %rgb=neopixel_colors χρώμα"
     //% weight=85 blockGap=8
     export function showColor(rgb: number): void {
@@ -858,7 +858,7 @@ namespace rb0ledstrip {
      * @param brightness a measure of LED brightness in 0-255. eg: 255
      */
     //% blockId="rb0strip_set_brightness"
-    //% block.loc.el="led strip set brightness at %brightness"
+    //% block="led strip set brightness at %brightness"
     //% block.loc.el="ταινία led όρισε τη φωτεινότητα σε %brightness"
     //% weight=59 advanced=true blockGap=8
     export function setBrightness(brightness: number): void {
