@@ -595,7 +595,9 @@ namespace rb0ledstrip {
      * Gets the RGB value of a known color
     */
     //% weight=2 blockGap=8
-    //% blockId="neopixel_colors" block="%color"
+    //% blockId="neopixel_colors"
+    //% block="%color"
+    //% color.defl=NeoPixelColors.White
     export function colors(color: NeoPixelColors): number {
         return color;
     }
@@ -680,6 +682,7 @@ namespace rb0ledstrip {
     //% blockId="rb0strip_simplecreate"
     //% block="led strip at port %port|and contains %numleds|led"
     //% weight=90 blockGap=8
+    //% numleds.defl=1
     export function rb0strip_createsimple(port: KeyestudioPort, numleds: number) {
         let pin = rb0base.getPinFromKeyestudioPort(port);
         rb0base.enablePin(pin);
@@ -703,6 +706,7 @@ namespace rb0ledstrip {
     //% blockId="rb0strip_advancedcreate"
     //% block="led strip at %pin|and contains %numleds|led in operation %mode"
     //% weight=90 blockGap=8 advanced=true
+    //% numleds.defl=1
     export function rb0strip_createadvanced(pin: DigitalPin, numleds: number, mode: NeoPixelMode): void {
         rb0ledstip1 = new Strip();
         let stride = mode === NeoPixelMode.RGBW ? 4 : 3;
@@ -726,6 +730,7 @@ namespace rb0ledstrip {
     //% blockId="rb0strip_set_pixel_color"
     //% block="led strip set led %pixeloffset| %rgb=neopixel_colors"
     //% weight=80 blockGap=8
+    //% pixeloffset.defl=1
     export function setPixelColor(pixeloffset: number, rgb: number): void {
         pixeloffset = pixeloffset - 1;
         rb0ledstip1.setPixelColor(pixeloffset, rgb);
