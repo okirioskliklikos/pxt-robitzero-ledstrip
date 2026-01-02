@@ -29,7 +29,7 @@
   "rb0ledstrip.rb0strip_createsimple|block": "led strip at port %port|and contains %numleds|led",
   "rb0ledstrip.rgb|block": "red %red|green %green|blue %blue",
   "rb0ledstrip.rotate|block": "led strip rotate pixels with step %offset|led",
-  "rb0ledstrip.setBrightness|block": "led strip set brightness at %brightness",
+  "rb0ledstrip.setBrightness|block": "led strip set brightness at %brightness\\%",
   "rb0ledstrip.setPixelColor|block": "led strip set led %pixeloffset| %rgb=neopixel_colors",
   "rb0ledstrip.showColor|block": "led strip show color %rgb=neopixel_colors",
   "rb0ledstrip|block": "Led Strip",
