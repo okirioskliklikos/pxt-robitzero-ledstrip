@@ -34,5 +34,6 @@
   "rb0ledstrip.setPixelColor|block": "ταινία led άλλαξε το led %pixeloffset|σε %rgb=neopixel_colors",
   "rb0ledstrip.showColor|block": "ταινία led εμφάνισε %rgb=neopixel_colors χρώμα",
   "rb0ledstrip|block": "Ταινία Led",
-  "{id:category}Rb0ledstrip": "Rb0ledstrip"
+  "{id:category}Rb0ledstrip": "Rb0ledstrip",
+  "{id:group}Logic": "Λογική"
 }

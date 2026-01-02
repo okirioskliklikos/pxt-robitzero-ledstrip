@@ -33,5 +33,6 @@
   "rb0ledstrip.setPixelColor|block": "led strip set led %pixeloffset| %rgb=neopixel_colors",
   "rb0ledstrip.showColor|block": "led strip show color %rgb=neopixel_colors",
   "rb0ledstrip|block": "Led Strip",
-  "{id:category}Rb0ledstrip": "Rb0ledstrip"
+  "{id:category}Rb0ledstrip": "Rb0ledstrip",
+  "{id:group}Logic": "Logic"  
 }
