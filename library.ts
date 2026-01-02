@@ -596,18 +596,6 @@ namespace rb0ledstrip {
         return packRGB(red, green, blue);
     }
 
-    /**
-     * Gets the RGB value of a known color
-    */
-    //% weight=2 blockGap=8
-    //% blockId="neopixel_colors"
-    //% block="%color"
-    //% advanced=true
-    //% color.defl=NeoPixelColors.White
-    export function colors(color: NeoPixelColors): number {
-        return color;
-    }
-
     function packRGB(a: number, b: number, c: number): number {
         return ((a & 0xFF) << 16) | ((b & 0xFF) << 8) | (c & 0xFF);
     }
@@ -846,5 +834,19 @@ namespace rb0ledstrip {
         const clamped = Math.max(0, Math.min(100, brightness));
         const aBright = (clamped / 100) * MAXBRIGHTNESS;
         rb0ledstip1.setBrightness(aBright);
+    }
+
+
+    /**
+     * Gets the RGB value of a known color
+    */
+    //% weight=2 blockGap=8
+    //% blockId="neopixel_colors"
+    //% block="%color"
+    //% group="Logic"
+    //% advanced=true
+    //% color.defl=NeoPixelColors.White
+    export function colors(color: NeoPixelColors): number {
+        return color;
     }
 }
