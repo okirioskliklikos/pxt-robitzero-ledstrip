@@ -35,6 +35,7 @@ enum NeoPixelMode {
  * Functions to operate NeoPixel strips.
  */
 //% block="Led Strip"
+//% groups=['Logic']
 //% weight=7 color=#e86800 icon="\uf0eb"
 namespace rb0ledstrip {
 
@@ -801,6 +802,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_islighted"
     //% block="led strip is lighted"
+    //% group="Logic"
     //% weight=38 blockGap=8
     export function isStripLighted(): boolean {
         return rb0ledstip1.isStripLighted();
@@ -812,6 +814,7 @@ namespace rb0ledstrip {
     */
     //% blockId="rb0strip_isnotlighted"
     //% block="led strip is not lighted"
+    //% group="Logic"
     //% weight=37 blockGap=8
     export function isStripNotLighted(): boolean {
         return rb0ledstip1.isStripNotLighted();
@@ -825,6 +828,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_iscolored"
     //% block="led strip is showing %color"
+    //% group="Logic"
     //% weight=35 blockGap=8
     export function isStripColored(color: NeoPixelColors): boolean {
         return rb0ledstip1.isStripColor(color);
