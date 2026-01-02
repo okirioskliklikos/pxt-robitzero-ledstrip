@@ -587,10 +587,10 @@ namespace rb0ledstrip {
      * @param green value of the green channel between 0 and 255. eg: 255
      * @param blue value of the blue channel between 0 and 255. eg: 255
      */
-    //% weight=1
-    //% blockId="neopixel_rgb"
-    //% block="red %red|green %green|blue %blue"
-    //% advanced=true
+    // weight=1
+    // blockId="neopixel_rgb"
+    // block="red %red|green %green|blue %blue"
+    // advanced=true
     export function rgb(red: number, green: number, blue: number): number {
         return packRGB(red, green, blue);
     }
@@ -601,6 +601,7 @@ namespace rb0ledstrip {
     //% weight=2 blockGap=8
     //% blockId="neopixel_colors"
     //% block="%color"
+    //% advanced=true
     //% color.defl=NeoPixelColors.White
     export function colors(color: NeoPixelColors): number {
         return color;
@@ -685,7 +686,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_simplecreate"
     //% block="led strip at port %port|and contains %numleds|led"
-    //% weight=90 blockGap=8
+    //% weight=90 blockGap=24
     //% numleds.defl=1
     export function rb0strip_createsimple(port: KeyestudioPort, numleds: number) {
         let pin = rb0base.getPinFromKeyestudioPort(port);
@@ -709,7 +710,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_advancedcreate"
     //% block="led strip at %pin|and contains %numleds|led in operation %mode"
-    //% weight=90 blockGap=8 advanced=true
+    //% weight=90 blockGap=24 advanced=true
     //% numleds.defl=1
     export function rb0strip_createadvanced(pin: DigitalPin, numleds: number, mode: NeoPixelMode): void {
         rb0ledstip1 = new Strip();
@@ -745,7 +746,7 @@ namespace rb0ledstrip {
     */
     //% blockId="rb0strip_light_all_leds"
     //% block="led strip show all leds"
-    //% weight=88 advanced=true
+    //% weight=88 advanced=true blockGap=8
     export function lightAllLeds(): void {
         rb0ledstip1.showColor(rb0ledstip1.stripColor);
     }
@@ -755,7 +756,7 @@ namespace rb0ledstrip {
     */
     //% blockId="rb0strip_hide"
     //% block="led strip hide all leds"
-    //% weight=77
+    //% weight=77 blockGap=24
     export function hide(): void {
         rb0ledstip1.hideAllLeds();
     }
@@ -766,7 +767,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_clear"
     //% block="led strip clear leds"
-    //% weight=87 advanced=true
+    //% weight=87 advanced=true blockGap=8
     export function clear(): void {
         rb0ledstip1.clear();
     }
@@ -789,7 +790,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_rotate"
     //% block="led strip rotate pixels with step %offset|led"
-    //% weight=39 advanced=true  blockGap=8
+    //% weight=39 advanced=true  blockGap=24
     export function rotate(offset: number = 1): void {
         rb0ledstip1.rotate(offset);
     }
@@ -800,7 +801,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_islighted"
     //% block="led strip is lighted"
-    //% weight=38
+    //% weight=38 blockGap=8
     export function isStripLighted(): boolean {
         return rb0ledstip1.isStripLighted();
     }
@@ -811,7 +812,7 @@ namespace rb0ledstrip {
     */
     //% blockId="rb0strip_isnotlighted"
     //% block="led strip is not lighted"
-    //% weight=37
+    //% weight=37 blockGap=8
     export function isStripNotLighted(): boolean {
         return rb0ledstip1.isStripNotLighted();
     }
@@ -824,7 +825,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_iscolored"
     //% block="led strip is showing %color"
-    //% weight=35
+    //% weight=35 blockGap=8
     export function isStripColored(color: NeoPixelColors): boolean {
         return rb0ledstip1.isStripColor(color);
     }
@@ -841,14 +842,5 @@ namespace rb0ledstrip {
         const clamped = Math.max(0, Math.min(100, brightness));
         const aBright = (clamped / 100) * MAXBRIGHTNESS;
         rb0ledstip1.setBrightness(aBright);
-    }
-
-    /**
-     * Gets the RGB value of a known color
-    */
-    //% weight=2 blockGap=8
-    //% blockId="rb0strip_getColor"
-    export function getColor(color: NeoPixelColors): number {
-        return color;
     }
 }
