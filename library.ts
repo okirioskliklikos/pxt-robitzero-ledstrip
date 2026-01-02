@@ -328,6 +328,7 @@ namespace rb0ledstrip {
         //% parts="neopixel" advanced=true
         setBrightness(brightness: number): void {
             this.brightness = brightness & 0xff;
+            this.show();
         }
 
         /**
@@ -830,7 +831,8 @@ namespace rb0ledstrip {
      * @param brightness a measure of LED brightness in 0-255. eg: 255
      */
     //% blockId="rb0strip_set_brightness"
-    //% block="led strip set brightness at %brightness"
+    //% block="led strip set brightness at %1\\%"
+    //% brightness.min=0 brightness.max=100 brightness.defl=10
     //% weight=59 advanced=true blockGap=8
     export function setBrightness(brightness: number): void {
         rb0ledstip1.setBrightness(brightness);
