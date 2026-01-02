@@ -13,7 +13,7 @@
         "README.md",
         "main.blocks",
         "main.ts",
-        "custom.ts",
+        "library.ts",
         "_locales/en/pxt-robitzero-ledstrip-strings.json",
         "_locales/el/pxt-robitzero-ledstrip-strings.json"
     ],
