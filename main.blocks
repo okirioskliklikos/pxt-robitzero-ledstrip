@@ -1,1 +1,1 @@
-<xml xmlns="https://developers.google.com/blockly/xml"><variables></variables><block type="rb0strip_set_brightness" id="~AIUfHEH7(AViWR5*9nB" disabled-reasons="pxt_automatic_disabled" x="550" y="617"><value name="brightness"><shadow type="math_number_minmax" id="V$G:.:IX]7MMQw,dwt]R" disabled-reasons="pxt_automatic_disabled"><mutation min="0" max="100" label="Brightness" precision="0"></mutation><field name="SLIDER">54</field></shadow></value></block></xml>
+<xml xmlns="https://developers.google.com/blockly/xml"><variables></variables></xml>
