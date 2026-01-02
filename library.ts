@@ -37,6 +37,9 @@ enum NeoPixelMode {
 //% block="Led Strip"
 //% weight=7 color=#e86800 icon="\uf0eb"
 namespace rb0ledstrip {
+
+    const MAXBRIGHTNESS = 120;
+
     /**
      * A NeoPixel strip
      */
@@ -828,14 +831,16 @@ namespace rb0ledstrip {
 
     /**
      * Set the brightness of the strip. This flag only applies to future operation.
-     * @param brightness a measure of LED brightness in 0-255. eg: 255
+     * @param brightness a measure of LED brightness in 0%-100%. eg: 50%
      */
     //% blockId="rb0strip_set_brightness"
     //% block="led strip set brightness at %1\\%"
     //% brightness.min=0 brightness.max=100 brightness.defl=10
     //% weight=59 advanced=true blockGap=8
     export function setBrightness(brightness: number): void {
-        rb0ledstip1.setBrightness(brightness);
+        const clamped = Math.max(0, Math.min(100, brightness));
+        const aBright = (clamped / 100) * MAXBRIGHTNESS;
+        rb0ledstip1.setBrightness(aBright);
     }
 
     /**
