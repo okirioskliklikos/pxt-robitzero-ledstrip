@@ -675,7 +675,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_simplecreate"
     //% block="led strip at port %port|and contains %numleds|led"
-    //% weight=90 blockGap=24
+    //% weight=90 color=100 blockGap=24
     //% numleds.defl=1
     export function rb0strip_createsimple(port: KeyestudioPort, numleds: number) {
         let pin = rb0base.getPinFromKeyestudioPort(port);
@@ -699,7 +699,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_advancedcreate"
     //% block="led strip at %pin|and contains %numleds|led in operation %mode"
-    //% weight=90 blockGap=24 advanced=true
+    //% weight=90 color=100 blockGap=24 advanced=true
     //% numleds.defl=1
     export function rb0strip_createadvanced(pin: DigitalPin, numleds: number, mode: NeoPixelMode): void {
         rb0ledstip1 = new Strip();
