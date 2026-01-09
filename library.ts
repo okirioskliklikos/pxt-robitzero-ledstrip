@@ -674,7 +674,7 @@ namespace rb0ledstrip {
      * @param numleds αριθμός led στην ταινία, π.χ.: 24,30,60,64
      */
     //% blockId="rb0strip_simplecreate"
-    //% block="led strip at port %port|and contains %numleds|led"
+    //% block="LED strip at port %port|and contains %numleds|led"
     //% weight=90 color=100 blockGap=24
     //% numleds.defl=1
     export function rb0strip_createsimple(port: KeyestudioPort, numleds: number) {
@@ -698,7 +698,7 @@ namespace rb0ledstrip {
      * @param numleds αριθμός led στην ταινία, π.χ.: 24,30,60,64
      */
     //% blockId="rb0strip_advancedcreate"
-    //% block="led strip at %pin|and contains %numleds|led in operation %mode"
+    //% block="LED strip at %pin|and contains %numleds|led in operation %mode"
     //% weight=90 color=100 blockGap=24 advanced=true
     //% numleds.defl=1
     export function rb0strip_createadvanced(pin: DigitalPin, numleds: number, mode: NeoPixelMode): void {
@@ -722,7 +722,7 @@ namespace rb0ledstrip {
      * @param rgb RGB color of the LED
      */
     //% blockId="rb0strip_set_pixel_color"
-    //% block="led strip set led %pixeloffset| %rgb=neopixel_colors"
+    //% block="LED strip set led %pixeloffset| %rgb=neopixel_colors"
     //% weight=80 blockGap=8
     //% pixeloffset.defl=1
     export function setPixelColor(pixeloffset: number, rgb: number): void {
@@ -734,7 +734,7 @@ namespace rb0ledstrip {
     * Turn on all LEDs.
     */
     //% blockId="rb0strip_light_all_leds"
-    //% block="led strip show all leds"
+    //% block="LED strip turn on"
     //% weight=88 advanced=true blockGap=8
     export function lightAllLeds(): void {
         rb0ledstip1.showColor(rb0ledstip1.stripColor);
@@ -744,7 +744,7 @@ namespace rb0ledstrip {
     * Turn off all LEDs.
     */
     //% blockId="rb0strip_hide"
-    //% block="led strip hide all leds"
+    //% block="LED strip turn off"
     //% weight=77 blockGap=24
     export function hide(): void {
         rb0ledstip1.hideAllLeds();
@@ -755,7 +755,7 @@ namespace rb0ledstrip {
      * You need to call ``show`` to make the changes visible.
      */
     //% blockId="rb0strip_clear"
-    //% block="led strip clear leds"
+    //% block="LED strip clear leds"
     //% weight=87 advanced=true blockGap=8
     export function clear(): void {
         rb0ledstip1.clear();
@@ -766,7 +766,7 @@ namespace rb0ledstrip {
      * @param rgb χρώμα RGB για τα LED
      */
     //% blockId="rb0strip_set_strip_color"
-    //% block="led strip show color %rgb=neopixel_colors"
+    //% block="LED strip show color %rgb=neopixel_colors"
     //% weight=85 blockGap=8
     export function showColor(rgb: number): void {
         rb0ledstip1.showColor(rgb);
@@ -778,7 +778,7 @@ namespace rb0ledstrip {
      * @param offset number of pixels to rotate forward, eg: 1
      */
     //% blockId="rb0strip_rotate"
-    //% block="led strip rotate pixels with step %offset|led"
+    //% block="LED strip rotate pixels with step %offset|led"
     //% weight=39 advanced=true  blockGap=24
     export function rotate(offset: number = 1): void {
         rb0ledstip1.rotate(offset);
@@ -789,7 +789,7 @@ namespace rb0ledstrip {
      * 
      */
     //% blockId="rb0strip_islighted"
-    //% block="led strip is lighted"
+    //% block="LED strip is lighted"
     //% group="Logic"
     //% weight=38 blockGap=8
     export function isStripLighted(): boolean {
@@ -801,7 +801,7 @@ namespace rb0ledstrip {
     * 
     */
     //% blockId="rb0strip_isnotlighted"
-    //% block="led strip is not lighted"
+    //% block="LED strip is not lighted"
     //% group="Logic"
     //% weight=37 blockGap=8
     export function isStripNotLighted(): boolean {
@@ -815,7 +815,7 @@ namespace rb0ledstrip {
      * @param rgb RGB color of the LED
      */
     //% blockId="rb0strip_iscolored"
-    //% block="led strip is showing %color"
+    //% block="LED strip is showing %color"
     //% group="Logic"
     //% weight=35 blockGap=8
     export function isStripColored(color: NeoPixelColors): boolean {
@@ -827,7 +827,7 @@ namespace rb0ledstrip {
      * @param brightness a measure of LED brightness in 0%-100%. eg: 50%
      */
     //% blockId="rb0strip_set_brightness"
-    //% block="led strip set brightness at %1\\%"
+    //% block="LED strip set brightness at %1\\%"
     //% brightness.min=0 brightness.max=100 brightness.defl=10
     //% weight=59 advanced=true blockGap=8
     export function setBrightness(brightness: number): void {
