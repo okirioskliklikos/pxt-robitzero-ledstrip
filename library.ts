@@ -66,8 +66,10 @@ namespace rb0ledstrip {
         //% parts="neopixel"
         showColor(rgb: number) {
             this.clear();
-            this.stripColor = rgb;
-            this.lighted = true;
+            if (rgb !== NeoPixelColors.Black) {
+                this.stripColor = rgb;
+                this.lighted = true;
+            }
             rgb = rgb >> 0;
             this.setAllRGB(rgb);
             this.show();
@@ -276,11 +278,11 @@ namespace rb0ledstrip {
         /**
         * Turn on all LEDs.
         */
-        //% blockId="neopixel_lightAllLeds" block="%strip|άναψε όλα τα led"
+        //% blockId="neopixel_turnon" block="%strip|άναψε όλα τα led"
         //% strip.defl="ταινία led"
         //% weight=88
         //% parts="neopixel"
-        lightAllLeds(): void {
+        turnOn(): void {
             this.showColor(this.stripColor);
         }
 
@@ -733,25 +735,29 @@ namespace rb0ledstrip {
     /**
     * Turn on all LEDs.
     */
-    //% blockId="rb0strip_light_all_leds"
+    //% blockId="rb0strip_turnon"
     //% block="LED strip turn on"
     //% weight=88 advanced=true blockGap=8
-    export function lightAllLeds(): void {
-        rb0ledstip1.showColor(rb0ledstip1.stripColor);
+    export function turnOn(): void {
+        if (rb0ledstip1.stripColor === NeoPixelColors.Black) {
+            rb0ledstip1.showColor(NeoPixelColors.White);
+        } else {
+            rb0ledstip1.showColor(rb0ledstip1.stripColor);
+        }
     }
 
     /**
     * Turn off all LEDs.
     */
-    //% blockId="rb0strip_hide"
+    //% blockId="rb0strip_turnoff"
     //% block="LED strip turn off"
     //% weight=77 blockGap=24
-    export function hide(): void {
+    export function turnOff(): void {
         rb0ledstip1.hideAllLeds();
     }
 
     /**
-     * Turn off all LEDs.
+     * Clear all LEDs.
      * You need to call ``show`` to make the changes visible.
      */
     //% blockId="rb0strip_clear"
