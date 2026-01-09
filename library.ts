@@ -34,7 +34,7 @@ enum NeoPixelMode {
 /**
  * Functions to operate NeoPixel strips.
  */
-//% block="Led Strip"
+//% block="LED Strip"
 //% groups=['Logic']
 //% weight=7 color=#e86800 icon="\uf0a9"
 namespace rb0ledstrip {
