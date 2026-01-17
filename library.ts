@@ -1,4 +1,3 @@
-
 enum NeoPixelColors {
     //% block="white"
     White = 0xAAAAAA,
@@ -10,7 +9,7 @@ enum NeoPixelColors {
     Blue = 0x0000FF,
     //% block="orange"
     Orange = 0xFF3300,
-    //% block="yello"
+    //% block="yellow"
     Yellow = 0xAA6600,
     //% block="purple"
     Purple = 0x8a2be2,
@@ -46,15 +45,37 @@ namespace rb0ledstrip {
      */
     class Strip {
         buf: Buffer;
+        trueColors: number[];  //Always in RGB or RGBW mode
+
         pin: DigitalPin;
         // TODO: encode as bytes instead of 32bit
         brightness: number;
         start: number; // start offset in LED strip
         stripColor: number;
-        lighted: boolean;
+        turnedOn: boolean;
         _length: number; // number of LEDs
         _mode: NeoPixelMode;
         _matrixWidth: number; // number of leds in a matrix - if any
+
+
+        initTrueColors() {
+            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+            this.trueColors = [];
+            for (let i = 0; i < stride * this._length; ++i) {
+                this.trueColors.push(0);
+            }
+        }
+
+        isLighted(): boolean {
+            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+            for (let i = 0; i < stride * this._length; ++i) {
+                if (this.trueColors[i] > 0) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         /**
          * Shows all LEDs to a given color (range 0-255 for r, g, b).
@@ -66,131 +87,18 @@ namespace rb0ledstrip {
         //% parts="neopixel"
         showColor(rgb: number) {
             this.clear();
+            this.stripColor = rgb;
             if (rgb !== NeoPixelColors.Black) {
-                this.stripColor = rgb;
-                this.lighted = true;
+                this.turnedOn = true;
             }
             rgb = rgb >> 0;
             this.setAllRGB(rgb);
             this.show();
         }
 
-        /**
-         * Shows all LEDs to a given color (range 0-255 for r, g, b).
-         * @param rgb χρώμα RGB για τα LED
-         */
-        //% blockId="neopixel_hideAllLeds" block="%strip|σβήσε όλα τα led"
-        //% strip.defl="ταινία led"
-        //% weight=85 blockGap=8
-        //% parts="neopixel"
-        hideAllLeds() {
+        turnOff() {
+            this.turnedOn = false;
             this.clear();
-            this.setAllRGB(NeoPixelColors.Black);
-            this.show();
-        }
-
-        /**
-         * Shows a rainbow pattern on all LEDs.
-         * @param startHue the start hue value for the rainbow, eg: 1
-         * @param endHue the end hue value for the rainbow, eg: 360
-         */
-        //% blockId="neopixel_set_strip_rainbow" block="%strip|εμφάνισε ουράνιο τόξο από %startHue|μέχρι %endHue"
-        //% strip.defl="ταινία led"
-        //% weight=80 blockGap=8
-        //% parts="neopixel" advanced=true
-        showRainbow(startHue: number = 1, endHue: number = 360) {
-            if (this._length <= 0) return;
-
-            startHue = startHue >> 0;
-            endHue = endHue >> 0;
-            const saturation = 100;
-            const luminance = 50;
-            const steps = this._length;
-            const direction = HueInterpolationDirection.Clockwise;
-
-            //hue
-            const h1 = startHue;
-            const h2 = endHue;
-            const hDistCW = ((h2 + 360) - h1) % 360;
-            const hStepCW = Math.idiv((hDistCW * 100), steps);
-            const hDistCCW = ((h1 + 360) - h2) % 360;
-            const hStepCCW = Math.idiv(-(hDistCCW * 100), steps);
-            let hStep: number;
-            if (direction === HueInterpolationDirection.Clockwise) {
-                hStep = hStepCW;
-            } else if (direction === HueInterpolationDirection.CounterClockwise) {
-                hStep = hStepCCW;
-            } else {
-                hStep = hDistCW < hDistCCW ? hStepCW : hStepCCW;
-            }
-            const h1_100 = h1 * 100; //we multiply by 100 so we keep more accurate results while doing interpolation
-
-            //sat
-            const s1 = saturation;
-            const s2 = saturation;
-            const sDist = s2 - s1;
-            const sStep = Math.idiv(sDist, steps);
-            const s1_100 = s1 * 100;
-
-            //lum
-            const l1 = luminance;
-            const l2 = luminance;
-            const lDist = l2 - l1;
-            const lStep = Math.idiv(lDist, steps);
-            const l1_100 = l1 * 100
-
-            //interpolate
-            if (steps === 1) {
-                this.setPixelColor(0, hsl(h1 + hStep, s1 + sStep, l1 + lStep))
-            } else {
-                this.setPixelColor(0, hsl(startHue, saturation, luminance));
-                for (let i = 1; i < steps - 1; i++) {
-                    const h = Math.idiv((h1_100 + i * hStep), 100) + 360;
-                    const s = Math.idiv((s1_100 + i * sStep), 100);
-                    const l = Math.idiv((l1_100 + i * lStep), 100);
-                    this.setPixelColor(i, hsl(h, s, l));
-                }
-                this.setPixelColor(steps - 1, hsl(endHue, saturation, luminance));
-            }
-            this.show();
-        }
-
-        /**
-         * Displays a vertical bar graph based on the `value` and `high` value.
-         * If `high` is 0, the chart gets adjusted automatically.
-         * @param value current value to plot
-         * @param high maximum value, eg: 255
-         */
-        //% weight=84
-        //% blockId=neopixel_show_bar_graph block="%strip|show bar graph of %value|up to %high"
-        //% strip.defl=strip
-        //% icon="\uf080"
-        //% parts="neopixel"
-        private showBarGraph(value: number, high: number): void {
-            if (high <= 0) {
-                this.clear();
-                this.setPixelColor(0, NeoPixelColors.Yellow);
-                this.show();
-                return;
-            }
-
-            value = Math.abs(value);
-            const n = this._length;
-            const n1 = n - 1;
-            let v = Math.idiv((value * n), high);
-            if (v == 0) {
-                this.setPixelColor(0, 0x666600);
-                for (let i = 1; i < n; ++i)
-                    this.setPixelColor(i, 0);
-            } else {
-                for (let i = 0; i < n; ++i) {
-                    if (i <= v) {
-                        const b = Math.idiv(i * 255, n1);
-                        this.setPixelColor(i, rb0ledstrip.rgb(b, 0, 255 - b));
-                    }
-                    else this.setPixelColor(i, 0);
-                }
-            }
             this.show();
         }
 
@@ -202,10 +110,13 @@ namespace rb0ledstrip {
          */
         //% blockId="neopixel_set_pixel_color" block="%strip|άλλαξε το led %pixeloffset|σε %rgb=neopixel_colors"
         //% strip.defl="ταινία led"
-        //% blockGap=8
-        //% weight=80
+        //% weight=80 blockGap=24
         //% parts="neopixel"
         setPixelColor(pixeloffset: number, rgb: number): void {
+            if (rgb !== NeoPixelColors.Black) {
+                this.turnedOn = true;
+            }
+
             this.setPixelRGB(pixeloffset >> 0, rgb >> 0);
             this.show();
         }
@@ -220,59 +131,28 @@ namespace rb0ledstrip {
         //% strip.defl="ταινία led"
         //% weight=35
         //% parts="neopixel"
-        isStripColor(color: NeoPixelColors): boolean {
-            return this.stripColor == color;
-        }
+        isStripColored(color: NeoPixelColors): boolean {
+            const end = this.start + this._length;
+            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
 
-        /**
-         * Sets the number of pixels in a matrix shaped strip
-         * @param width number of pixels in a row
-         */
-        //% blockId=neopixel_set_matrix_width block="%strip|set matrix width %width"
-        //% strip.defl=strip
-        //% blockGap=8
-        //% weight=5
-        //% parts="neopixel" advanced=true
-        private setMatrixWidth(width: number) {
-            this._matrixWidth = Math.min(this._length, width >> 0);
-        }
+            let allblack = true;
+            for (let i = this.start; i < end; ++i) {
+                // Get the original color from trueColors buffer
+                let r = this.trueColors[i * stride + 0]
+                let g = this.trueColors[i * stride + 1]
+                let b = this.trueColors[i * stride + 2]
+                //let w = stride === 4 ? this.trueColors[i * stride + 3] : 0
 
-        /**
-         * Set LED to a given color (range 0-255 for r, g, b) in a matrix shaped strip
-         * You need to call ``show`` to make the changes visible.
-         * @param x horizontal position
-         * @param y horizontal position
-         * @param rgb RGB color of the LED
-         */
-        //% blockId="neopixel_set_matrix_color" block="%strip|set matrix color at x %x|y %y|to %rgb=neopixel_colors"
-        //% strip.defl=strip
-        //% weight=4
-        //% parts="neopixel" advanced=true
-        private setMatrixColor(x: number, y: number, rgb: number) {
-            if (this._matrixWidth <= 0) return; // not a matrix, ignore
-            x = x >> 0;
-            y = y >> 0;
-            rgb = rgb >> 0;
-            const cols = Math.idiv(this._length, this._matrixWidth);
-            if (x < 0 || x >= this._matrixWidth || y < 0 || y >= cols) return;
-            let i = x + y * this._matrixWidth;
-            this.setPixelColor(i, rgb);
-        }
-
-        /**
-         * For NeoPixels with RGB+W LEDs, set the white LED brightness. This only works for RGB+W NeoPixels.
-         * @param pixeloffset position of the LED in the strip
-         * @param white brightness of the white LED
-         */
-        //% blockId="neopixel_set_pixel_white" block="%strip|set pixel white LED at %pixeloffset|to %white"
-        //% strip.defl=strip
-        //% blockGap=8
-        //% weight=80
-        //% parts="neopixel" advanced=true
-        private setPixelWhiteLED(pixeloffset: number, white: number): void {
-            if (this._mode === NeoPixelMode.RGBW) {
-                this.setPixelW(pixeloffset >> 0, white >> 0);
+                let curcolor = rgb(r, g, b);
+                if (color !== NeoPixelColors.Black) {
+                    allblack = false;
+                    if (color !== curcolor) {
+                        return false;
+                    }
+                }
             }
+
+            return allblack ? false : true;
         }
 
         /**
@@ -283,7 +163,8 @@ namespace rb0ledstrip {
         //% weight=88
         //% parts="neopixel"
         turnOn(): void {
-            this.showColor(this.stripColor);
+            this.turnedOn = true;
+            this.applyTrueColors();
         }
 
         /**
@@ -297,7 +178,6 @@ namespace rb0ledstrip {
         clear(): void {
             const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
             this.buf.fill(0, this.start * stride, this._length * stride);
-            this.lighted = false;
             this.show();
         }
 
@@ -324,6 +204,24 @@ namespace rb0ledstrip {
             return this._length;
         }
 
+        applyTrueColors(): void {
+            const end = this.start + this._length;
+            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+
+            for (let i = this.start; i < end; ++i) {
+                // Get the original color from trueColors buffer
+                let r = this.trueColors[i * stride + 0]
+                let g = this.trueColors[i * stride + 1]
+                let b = this.trueColors[i * stride + 2]
+                let w = stride === 4 ? this.trueColors[i * stride + 3] : 0
+
+                // Apply new brightness and write to buffer
+                this.setPixelRGB(i, rgb(r, g, b))  // or include W if RGBW
+            }
+
+            this.show()
+        }
+
         /**
          * Set the brightness of the strip. This flag only applies to future operation.
          * @param brightness a measure of LED brightness in 0-255. eg: 255
@@ -333,61 +231,50 @@ namespace rb0ledstrip {
         //% weight=59
         //% parts="neopixel" advanced=true
         setBrightness(brightness: number): void {
-            this.brightness = brightness & 0xff;
-            this.show();
-        }
+            const adjustedBrightness = brightness & 0xff;;
+            if (adjustedBrightness === this.brightness) {
+                return;
+            }
 
-        /**
-         * Apply brightness to current colors using a quadratic easing function.
-         **/
-        //% blockId="neopixel_each_brightness" block="%strip|ease brightness" blockGap=8
-        //% strip.defl=strip
-        //% weight=58
-        //% parts="neopixel"
-        private easeBrightness(): void {
-            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
-            const br = this.brightness;
-            const buf = this.buf;
-            const end = this.start + this._length;
-            const mid = Math.idiv(this._length, 2);
-            for (let i = this.start; i < end; ++i) {
-                const k = i - this.start;
-                const ledoffset = i * stride;
-                const br = k > mid
-                    ? Math.idiv(255 * (this._length - 1 - k) * (this._length - 1 - k), (mid * mid))
-                    : Math.idiv(255 * k * k, (mid * mid));
-                const r = (buf[ledoffset + 0] * br) >> 8; buf[ledoffset + 0] = r;
-                const g = (buf[ledoffset + 1] * br) >> 8; buf[ledoffset + 1] = g;
-                const b = (buf[ledoffset + 2] * br) >> 8; buf[ledoffset + 2] = b;
-                if (stride == 4) {
-                    const w = (buf[ledoffset + 3] * br) >> 8; buf[ledoffset + 3] = w;
-                }
+            this.brightness = adjustedBrightness;
+            if (this.turnedOn) {
+                this.applyTrueColors();
             }
         }
 
-        /**
-         * Create a range of LEDs.
-         * @param start offset in the LED strip to start the range
-         * @param length number of LEDs in the range. eg: 4
-         */
-        //% blockId="neopixel_range" block="%strip|από το led %start|με μήκος %length|led"
-        //% strip.defl="ταινία led"
-        //% weight=89
-        //% parts="neopixel" advanced=true
-        //% blockSetVariable="υποομάδα led"
-        //% length.defl=5
-        range(start: number = 0, length: number = 5): Strip {
-            start = start >> 0;
-            length = length >> 0;
-            let strip = new Strip();
-            strip.buf = this.buf;
-            strip.pin = this.pin;
-            strip.brightness = this.brightness;
-            strip.start = this.start + Math.clamp(0, this._length - 1, start);
-            strip._length = Math.clamp(0, this._length - (strip.start - this.start), length);
-            strip._matrixWidth = 0;
-            strip._mode = this._mode;
-            return strip;
+        private shiftTrueColors(offset: number): void {
+            offset = offset >> 0;
+            if (offset === 0) return;
+
+            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+            const count = this._length;
+
+            const tmp: number[] = [];
+
+            // Pre-fill with black
+            for (let i = 0; i < count * stride; i++) {
+                tmp.push(0);
+            }
+
+            for (let i = 0; i < count; i++) {
+                const srcIndex = i - offset;
+
+                if (srcIndex < 0 || srcIndex >= count) {
+                    continue; // stays black
+                }
+
+                const src = srcIndex * stride;
+                const dst = i * stride;
+
+                for (let c = 0; c < stride; c++) {
+                    tmp[dst + c] = this.trueColors[src + c];
+                }
+            }
+
+            // Copy back
+            for (let i = 0; i < tmp.length; i++) {
+                this.trueColors[i] = tmp[i];
+            }
         }
 
         /**
@@ -403,7 +290,41 @@ namespace rb0ledstrip {
             offset = offset >> 0;
             const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
             this.buf.shift(-offset * stride, this.start * stride, this._length * stride)
+            this.shiftTrueColors(offset);
             this.show();
+        }
+
+        private rotateTrueColors(offset: number): void {
+            offset = offset >> 0;
+            if (offset === 0) return;
+
+            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+            const count = this._length;
+
+            // Normalize offset
+            offset = ((offset % count) + count) % count;
+            if (offset === 0) return;
+
+            const tmp: number[] = [];
+
+            // Pre-fill so indices exist
+            for (let i = 0; i < count * stride; i++) {
+                tmp.push(0);
+            }
+
+            for (let i = 0; i < count; i++) {
+                const src = ((i - offset + count) % count) * stride;
+                const dst = i * stride;
+
+                for (let c = 0; c < stride; c++) {
+                    tmp[dst + c] = this.trueColors[src + c];
+                }
+            }
+
+            // Copy back
+            for (let i = 0; i < tmp.length; i++) {
+                this.trueColors[i] = tmp[i];
+            }
         }
 
         /**
@@ -419,6 +340,7 @@ namespace rb0ledstrip {
             offset = offset >> 0;
             const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
             this.buf.rotate(-offset * stride, this.start * stride, this._length * stride)
+            this.rotateTrueColors(offset);
             this.show();
         }
 
@@ -430,20 +352,8 @@ namespace rb0ledstrip {
         //% strip.defl="ταινία led"
         //% weight=38
         //% parts="neopixel"
-        isStripLighted(): boolean {
-            return this.lighted == true;
-        }
-
-        /**
-        * Return "true" if the led strip is lighted
-        * 
-        */
-        //% blockId="neopixed_strip_isnotlighted" block="%strip|δεν είναι αναμμένη"
-        //% strip.defl="ταινία led"
-        //% weight=37
-        //% parts="neopixel"
-        isStripNotLighted(): boolean {
-            return this.lighted == false;
+        isStripTurnedOn(): boolean {
+            return this.turnedOn;
         }
 
         /**
@@ -489,19 +399,30 @@ namespace rb0ledstrip {
             this.buf[offset + 2] = blue;
         }
 
+        private setTrueColorsBufferRGB(offset: number, red: number, green: number, blue: number): void {
+            this.trueColors[offset + 0] = red;
+            this.trueColors[offset + 1] = green;
+            this.trueColors[offset + 2] = blue;
+        }
+
         private setAllRGB(rgb: number) {
             let red = unpackR(rgb);
             let green = unpackG(rgb);
             let blue = unpackB(rgb);
 
             const br = this.brightness;
+            const end = this.start + this._length;
+            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
+
+            for (let i = this.start; i < end; ++i) {
+                this.setTrueColorsBufferRGB(i * stride, red, green, blue)
+            }
+
             if (br < 255) {
                 red = (red * br) >> 8;
                 green = (green * br) >> 8;
                 blue = (blue * br) >> 8;
             }
-            const end = this.start + this._length;
-            const stride = this._mode === NeoPixelMode.RGBW ? 4 : 3;
             for (let i = this.start; i < end; ++i) {
                 this.setBufferRGB(i * stride, red, green, blue)
             }
@@ -534,29 +455,15 @@ namespace rb0ledstrip {
             let blue = unpackB(rgb);
 
             let br = this.brightness;
+
+            this.setTrueColorsBufferRGB(pixeloffset, red, green, blue)
+
             if (br < 255) {
                 red = (red * br) >> 8;
                 green = (green * br) >> 8;
                 blue = (blue * br) >> 8;
             }
             this.setBufferRGB(pixeloffset, red, green, blue)
-        }
-        private setPixelW(pixeloffset: number, white: number): void {
-            if (this._mode !== NeoPixelMode.RGBW)
-                return;
-
-            if (pixeloffset < 0
-                || pixeloffset >= this._length)
-                return;
-
-            pixeloffset = (pixeloffset + this.start) * 4;
-
-            let br = this.brightness;
-            if (br < 255) {
-                white = (white * br) >> 8;
-            }
-            let buf = this.buf;
-            buf[pixeloffset + 3] = white;
         }
     }
 
@@ -689,6 +596,7 @@ namespace rb0ledstrip {
         rb0ledstip1._length = numleds;
         rb0ledstip1._mode = NeoPixelMode.RGB;
         rb0ledstip1._matrixWidth = 0;
+        rb0ledstip1.initTrueColors();
         rb0ledstip1.setPin(pin);
         rb0ledstip1.stripColor = NeoPixelColors.Orange;
         rb0ledstip1.setBrightness(10);
@@ -711,6 +619,7 @@ namespace rb0ledstrip {
         rb0ledstip1._length = numleds;
         rb0ledstip1._mode = mode || NeoPixelMode.RGB;
         rb0ledstip1._matrixWidth = 0;
+        rb0ledstip1.initTrueColors();
         rb0ledstip1.setBrightness(10)
         rb0ledstip1.setPin(pin)
         rb0ledstip1.stripColor = NeoPixelColors.Orange;
@@ -725,7 +634,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_set_pixel_color"
     //% block="LED strip set led %pixeloffset| %rgb=neopixel_colors"
-    //% weight=80 blockGap=8
+    //% weight=80 blockGap=24
     //% pixeloffset.defl=1
     export function setPixelColor(pixeloffset: number, rgb: number): void {
         pixeloffset = pixeloffset - 1;
@@ -737,13 +646,9 @@ namespace rb0ledstrip {
     */
     //% blockId="rb0strip_turnon"
     //% block="LED strip turn on"
-    //% weight=88 advanced=true blockGap=8
+    //% weight=78 blockGap=8
     export function turnOn(): void {
-        if (rb0ledstip1.stripColor === NeoPixelColors.Black) {
-            rb0ledstip1.showColor(NeoPixelColors.White);
-        } else {
-            rb0ledstip1.showColor(rb0ledstip1.stripColor);
-        }
+        rb0ledstip1.applyTrueColors();
     }
 
     /**
@@ -753,7 +658,7 @@ namespace rb0ledstrip {
     //% block="LED strip turn off"
     //% weight=77 blockGap=24
     export function turnOff(): void {
-        rb0ledstip1.hideAllLeds();
+        rb0ledstip1.turnOff();
     }
 
     /**
@@ -762,7 +667,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_clear"
     //% block="LED strip clear leds"
-    //% weight=87 advanced=true blockGap=8
+    //% weight=87 advanced=true blockGap=8 blockHidden=true
     export function clear(): void {
         rb0ledstip1.clear();
     }
@@ -791,41 +696,41 @@ namespace rb0ledstrip {
     }
 
     /**
-     * Return "true" if the led strip is lighted
+     * Return "true" if the led strip is turned on
      * 
      */
-    //% blockId="rb0strip_islighted"
-    //% block="LED strip is lighted"
+    //% blockId="rb0strip_isturnedon"
+    //% block="LED strip is turned on"
     //% group="Logic"
     //% weight=38 blockGap=8
-    export function isStripLighted(): boolean {
-        return rb0ledstip1.isStripLighted();
+    export function isStripTurnedOn(): boolean {
+        return rb0ledstip1.isStripTurnedOn();
     }
 
     /**
-    * Return "true" if the led strip is lighted
+    * Return "true" if the led strip is turned off
     * 
     */
-    //% blockId="rb0strip_isnotlighted"
-    //% block="LED strip is not lighted"
+    //% blockId="rb0strip_isturnedoff"
+    //% block="LED strip is turned off"
     //% group="Logic"
     //% weight=37 blockGap=8
-    export function isStripNotLighted(): boolean {
-        return rb0ledstip1.isStripNotLighted();
+    export function isStripTurnedOff(): boolean {
+        return !rb0ledstip1.isStripTurnedOn();
     }
 
     /**
-     * Return "true" if the strip showns color is equal to "color" parameter
-     * You need to call ``show`` to make the changes visible.
-     * @param pixeloffset position of the NeoPixel in the strip
-     * @param rgb RGB color of the LED
+     * Return "true" if the strip shows one or more leds with that color,
+     * all the other leds should be black if one of the other leds is iscolored
+     * differently then the function fails
+     * @param color RGB color to check is the strip shows
      */
     //% blockId="rb0strip_iscolored"
-    //% block="LED strip is showing %color"
+    //% block="LED strip is colored %color"
     //% group="Logic"
-    //% weight=35 blockGap=8
+    //% weight=35 blockGap=24
     export function isStripColored(color: NeoPixelColors): boolean {
-        return rb0ledstip1.isStripColor(color);
+        return rb0ledstip1.isStripColored(color);
     }
 
     /**
@@ -835,13 +740,12 @@ namespace rb0ledstrip {
     //% blockId="rb0strip_set_brightness"
     //% block="LED strip set brightness at %1\\%"
     //% brightness.min=0 brightness.max=100 brightness.defl=10
-    //% weight=59 advanced=true blockGap=8
+    //% weight=71 blockGap=24
     export function setBrightness(brightness: number): void {
         const clamped = Math.max(0, Math.min(100, brightness));
-        const aBright = (clamped / 100) * MAXBRIGHTNESS;
+        let aBright = Math.map(clamped, 0, 100, 0, MAXBRIGHTNESS)
         rb0ledstip1.setBrightness(aBright);
     }
-
 
     /**
      * Gets the RGB value of a known color
@@ -850,7 +754,6 @@ namespace rb0ledstrip {
     //% blockId="neopixel_colors"
     //% block="%color"
     //% group="Logic"
-    //% advanced=true
     //% color.defl=NeoPixelColors.White
     export function colors(color: NeoPixelColors): number {
         return color;
