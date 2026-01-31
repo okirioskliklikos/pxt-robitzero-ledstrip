@@ -599,7 +599,7 @@ namespace rb0ledstrip {
         rb0ledstip1.initTrueColors();
         rb0ledstip1.setPin(pin);
         rb0ledstip1.stripColor = NeoPixelColors.Orange;
-        rb0ledstip1.setBrightness(10);
+        rb0ledstip1.setBrightness(30);
     }
 
     /**
@@ -623,6 +623,7 @@ namespace rb0ledstrip {
         rb0ledstip1.setBrightness(10)
         rb0ledstip1.setPin(pin)
         rb0ledstip1.stripColor = NeoPixelColors.Orange;
+        rb0ledstip1.setBrightness(30);
     }
 
 
@@ -648,7 +649,7 @@ namespace rb0ledstrip {
     //% block="LED strip turn on"
     //% weight=78 blockGap=8
     export function turnOn(): void {
-        rb0ledstip1.applyTrueColors();
+        rb0ledstip1.turnOn();
     }
 
     /**
