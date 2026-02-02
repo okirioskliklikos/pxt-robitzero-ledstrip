@@ -600,6 +600,7 @@ namespace rb0ledstrip {
         rb0ledstip1.setPin(pin);
         rb0ledstip1.stripColor = NeoPixelColors.Orange;
         rb0ledstip1.setBrightness(30);
+        turnOff();
     }
 
     /**
@@ -624,6 +625,7 @@ namespace rb0ledstrip {
         rb0ledstip1.setPin(pin)
         rb0ledstip1.stripColor = NeoPixelColors.Orange;
         rb0ledstip1.setBrightness(30);
+        turnOff();
     }
 
 
