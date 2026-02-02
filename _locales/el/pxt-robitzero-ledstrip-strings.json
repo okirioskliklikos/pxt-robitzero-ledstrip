@@ -22,7 +22,7 @@
   "rb0ledstrip.colors|block": "%color",
   "rb0ledstrip.isStripColored|block": "ταινία led δείχνει %color|χρώμα",
   "rb0ledstrip.isStripTurnedOff|block": "ταινία led είναι σβηστή",
-  "rb0ledstrip.isStripTurnedOn|block": "ταινία led είναι ανοιχτή",
+  "rb0ledstrip.isStripTurnedOn|block": "ταινία led είναι αναμμένη",
   "rb0ledstrip.rb0strip_createadvanced|block": "ταινία led στο %pin|με %numleds|led σε λειτουργία %mode",
   "rb0ledstrip.rb0strip_createsimple|block": "ταινία led στην θύρα %port|και έχει %numleds|led",
   "rb0ledstrip.rotate|block": "ταινία led περιέστρεψε τα χρώματα κατά %offset|led",
