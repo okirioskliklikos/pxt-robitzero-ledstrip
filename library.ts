@@ -485,7 +485,7 @@ namespace rb0ledstrip {
         strip._length = numleds;
         strip._mode = mode || NeoPixelMode.RGB;
         strip._matrixWidth = 0;
-        strip.setBrightness(10)
+        strip.setBrightness(30)
         strip.setPin(pin)
         strip.stripColor = NeoPixelColors.Orange;
         return strip;
@@ -621,7 +621,6 @@ namespace rb0ledstrip {
         rb0ledstip1._mode = mode || NeoPixelMode.RGB;
         rb0ledstip1._matrixWidth = 0;
         rb0ledstip1.initTrueColors();
-        rb0ledstip1.setBrightness(10)
         rb0ledstip1.setPin(pin)
         rb0ledstip1.stripColor = NeoPixelColors.Orange;
         rb0ledstip1.setBrightness(30);
@@ -742,7 +741,7 @@ namespace rb0ledstrip {
      */
     //% blockId="rb0strip_setbrightness"
     //% block="LED strip set brightness at %1\\%"
-    //% brightness.min=0 brightness.max=100 brightness.defl=10
+    //% brightness.min=0 brightness.max=100 brightness.defl=30
     //% weight=71 blockGap=24
     export function setBrightness(brightness: number): void {
         const clamped = Math.max(0, Math.min(100, brightness));
@@ -756,8 +755,8 @@ namespace rb0ledstrip {
     //% weight=2 blockGap=8
     //% blockId="neopixel_colors"
     //% block="%color"
-    //% group="Logic"
-    //% color.defl=NeoPixelColors.White
+    //% group="Logic" advanced=true
+    //% color.defl=NeoPixelColors.White 
     export function colors(color: NeoPixelColors): number {
         return color;
     }
