@@ -578,15 +578,15 @@ namespace rb0ledstrip {
     let rb0ledstip1: Strip;
 
     /**
-     * Δημιουργία οδηγού για `numleds` LEDs.
+     * Αρχικοποίηση ταινίας led για `numleds` LEDs στην θύρα `port`.
      * @param pin το pin που βρίσκεται στη ταινία led
      * @param numleds αριθμός led στην ταινία, π.χ.: 24,30,60,64
      */
-    //% blockId="rb0strip_simplecreate"
+    //% blockId="rb0strip_initsimple"
     //% block="LED strip at port %port|and contains %numleds|led"
     //% weight=90 color=100 blockGap=24
     //% numleds.defl=1
-    export function rb0strip_createsimple(port: KeyestudioPort, numleds: number) {
+    export function rb0strip_initSimple(port: KeyestudioPort, numleds: number) {
         let pin = rb0base.getPinFromKeyestudioPort(port);
         rb0base.enablePin(pin);
         rb0ledstip1 = new Strip();
@@ -604,15 +604,15 @@ namespace rb0ledstrip {
     }
 
     /**
-     * Δημιουργία οδηγού για `numleds` LEDs.
+     * Αρχικοποίηση ταινίας led για `numleds` LEDs στον ακροδέκτη `pin`.
      * @param pin το pin που βρίσκεται στη ταινία led
      * @param numleds αριθμός led στην ταινία, π.χ.: 24,30,60,64
      */
-    //% blockId="rb0strip_advancedcreate"
+    //% blockId="rb0strip_initadvanced"
     //% block="LED strip at %pin|and contains %numleds|led in operation %mode"
     //% weight=90 color=100 blockGap=24 advanced=true
     //% numleds.defl=1
-    export function rb0strip_createadvanced(pin: DigitalPin, numleds: number, mode: NeoPixelMode): void {
+    export function rb0strip_initAdvanced(pin: DigitalPin, numleds: number, mode: NeoPixelMode): void {
         rb0ledstip1 = new Strip();
         let stride = mode === NeoPixelMode.RGBW ? 4 : 3;
         rb0ledstip1.buf = pins.createBuffer(numleds * stride);
@@ -635,7 +635,7 @@ namespace rb0ledstrip {
      * @param pixeloffset position of the NeoPixel in the strip
      * @param rgb RGB color of the LED
      */
-    //% blockId="rb0strip_set_pixel_color"
+    //% blockId="rb0strip_setpixelcolor"
     //% block="LED strip set led %pixeloffset| %rgb=neopixel_colors"
     //% weight=80 blockGap=24
     //% pixeloffset.defl=1
@@ -679,7 +679,7 @@ namespace rb0ledstrip {
      * Shows all LEDs to a given color (range 0-255 for r, g, b).
      * @param rgb χρώμα RGB για τα LED
      */
-    //% blockId="rb0strip_set_strip_color"
+    //% blockId="rb0strip_showcolor"
     //% block="LED strip show color %rgb=neopixel_colors"
     //% weight=85 blockGap=8
     export function showColor(rgb: number): void {
@@ -740,7 +740,7 @@ namespace rb0ledstrip {
      * Set the brightness of the strip. This flag only applies to future operation.
      * @param brightness a measure of LED brightness in 0%-100%. eg: 50%
      */
-    //% blockId="rb0strip_set_brightness"
+    //% blockId="rb0strip_setbrightness"
     //% block="LED strip set brightness at %1\\%"
     //% brightness.min=0 brightness.max=100 brightness.defl=10
     //% weight=71 blockGap=24
