@@ -1,6 +1,6 @@
 {
     "name": "pxt-robitzero-ledstrip",
-    "version": "0.6.1",
+    "version": "0.6.2",
     "description": "simplified neopixel library for led strips connected to keyestudio baseshields",
     "dependencies": {
         "core": "*",
