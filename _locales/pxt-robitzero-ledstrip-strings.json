@@ -10,6 +10,7 @@
   "NeoPixelMode.RGBW|block": "RGB+W",
   "NeoPixelMode.RGB_RGB|block": "RGB (RGB format)",
   "NeoPixelMode.RGB|block": "RGB (GRB format)",
+  "rb0ledstrip.changeBrightness|block": "LED strip change brightness by %1\\%",
   "rb0ledstrip.clear|block": "LED strip clear leds",
   "rb0ledstrip.colors|block": "%color",
   "rb0ledstrip.initAdvanced|block": "LED strip at %pin|and contains %numleds|led in operation %mode",

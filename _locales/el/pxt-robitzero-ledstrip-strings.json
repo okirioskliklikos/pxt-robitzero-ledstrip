@@ -10,6 +10,7 @@
   "NeoPixelMode.RGBW|block": "RGB+W",
   "NeoPixelMode.RGB_RGB|block": "RGB (RGB format)",
   "NeoPixelMode.RGB|block": "RGB (GRB format)",
+  "rb0ledstrip.changeBrightness|block": "ταινία led άλλαξε τη φωτεινότητα κατά %1\\%",
   "rb0ledstrip.clear|block": "ταινία led μηδένισε όλα τα led",
   "rb0ledstrip.colors|block": "%color",
   "rb0ledstrip.initAdvanced|block": "ταινία led στο %pin|με %numleds|led σε λειτουργία %mode",
