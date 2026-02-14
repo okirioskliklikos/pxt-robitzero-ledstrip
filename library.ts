@@ -242,6 +242,10 @@ namespace rb0ledstrip {
             }
         }
 
+        getBrightness(): number {
+            return this.brightness;
+        }
+
         private shiftTrueColors(offset: number): void {
             offset = offset >> 0;
             if (offset === 0) return;
@@ -736,17 +740,29 @@ namespace rb0ledstrip {
     }
 
     /**
-     * Set the brightness of the strip. This flag only applies to future operation.
+     * Set brightness of the strip.
      * @param brightness a measure of LED brightness in 0%-100%. eg: 50%
      */
     //% blockId="rb0strip_setbrightness"
     //% block="LED strip set brightness at %1\\%"
     //% brightness.min=0 brightness.max=100 brightness.defl=30
-    //% weight=71 blockGap=24
+    //% weight=71 blockGap=8
     export function setBrightness(brightness: number): void {
         const clamped = Math.max(0, Math.min(100, brightness));
         let aBright = Math.map(clamped, 0, 100, 0, MAXBRIGHTNESS)
         rb0ledstip1.setBrightness(aBright);
+    }
+
+    /**
+     * Change brightness of the strip. 
+     * @param brightness increase or decrease brightness based on specified step eg: 5%, -5%
+     */
+    //% blockId="rb0strip_changetbrightness"
+    //% block="LED strip change brightness by %1\\%"
+    //% step.defl=5
+    //% weight=65 blockGap=24
+    export function changeBrightness(step: number): void {
+        setBrightness(rb0ledstip1.getBrightness() + step);
     }
 
     /**
