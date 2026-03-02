@@ -10,7 +10,7 @@ enum NeoPixelColors {
     //% block="orange"
     Orange = 0xFF3300,
     //% block="yellow"
-    Yellow = 0xAA6600,
+    Yellow = 0xFF7700,
     //% block="purple"
     Purple = 0x8a2be2,
     //% block="black"
