@@ -77,6 +77,13 @@ namespace rb0ledstrip {
             return false;
         }
 
+        setStripColor(rgb: number) {
+            this.clear();
+            this.stripColor = rgb;
+            rgb = rgb >> 0;
+            this.setAllRGB(rgb);
+        }
+
         /**
          * Shows all LEDs to a given color (range 0-255 for r, g, b).
          * @param rgb χρώμα RGB για τα LED
@@ -86,13 +93,10 @@ namespace rb0ledstrip {
         //% weight=85 blockGap=8
         //% parts="neopixel"
         showColor(rgb: number) {
-            this.clear();
-            this.stripColor = rgb;
+            this.setStripColor(rgb);
             if (rgb !== NeoPixelColors.Black) {
                 this.turnedOn = true;
             }
-            rgb = rgb >> 0;
-            this.setAllRGB(rgb);
             this.show();
         }
 
@@ -602,7 +606,7 @@ namespace rb0ledstrip {
         rb0ledstip1._matrixWidth = 0;
         rb0ledstip1.initTrueColors();
         rb0ledstip1.setPin(pin);
-        rb0ledstip1.stripColor = NeoPixelColors.Orange;
+        rb0ledstip1.setStripColor(NeoPixelColors.White);
         rb0ledstip1.setBrightness(30);
         turnOff();
     }
@@ -626,7 +630,7 @@ namespace rb0ledstrip {
         rb0ledstip1._matrixWidth = 0;
         rb0ledstip1.initTrueColors();
         rb0ledstip1.setPin(pin)
-        rb0ledstip1.stripColor = NeoPixelColors.Orange;
+        rb0ledstip1.setStripColor(NeoPixelColors.White);
         rb0ledstip1.setBrightness(30);
         turnOff();
     }
